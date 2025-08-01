@@ -147,14 +147,16 @@ async function convertToTopoJSON(): Promise<void> {
     // Filter to major plates and convert to TopoJSON
     const plateFilter = MAJOR_PLATES.map(name => `PlateName="${name}"`).join(' || ');
     
-    const command = [
-      'npx mapshaper',
-      `"${inputPath}"`,
-      `-filter '${plateFilter}'`,
-      '-simplify 0.001',
-      '-o format=topojson',
-      `"${outputPath}"`
-    ].join(' ');
+  const command = [ 
+    'npx --yes mapshaper',         
+    `"${inputPath}"`, 
+    `-filter '${plateFilter}'`,     
+    '-dissolve PlateName',         
+    '-simplify 5% keep-shapes',     
+    "-each 'id=PlateName'",         
+    '-o format=topojson', 
+    `"${outputPath}"` 
+  ].join(' ');
 
     execSync(command, { stdio: 'pipe' });
     
