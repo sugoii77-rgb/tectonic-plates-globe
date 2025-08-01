@@ -2,7 +2,7 @@ import { execSync } from 'child_process';
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import fetch from 'node-fetch';
-import { PlateMeta, CollisionEQ } from '../app/types/plate';
+import { PlateMeta, CollisionEQ } from '../app/types/plate.js';
 
 const MAJOR_PLATES = [
   'Pacific', 'North America', 'South America', 
@@ -264,6 +264,5 @@ async function main(): Promise<void> {
   }
 }
 
-if (require.main === module) {
-  main();
-}
+// ES 모듈에서 직접 실행
+main();
