@@ -13,13 +13,17 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "three": "^0.150.1",
+    "react-globe.gl": "^2.24.0",
+    "d3-scale-chromatic": "^3.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@types/node": "^20.10.4",
     "@types/jest": "^29.5.8",
+    "@types/three": "^0.150.2",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
     "@vitejs/plugin-react": "^4.2.1",
@@ -47,7 +51,8 @@
     "tectonic-plates",
     "interactive",
     "globe",
-    "react"
+    "react",
+    "three.js"
   ],
   "license": "MIT",
   "repository": {
