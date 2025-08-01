@@ -47,22 +47,69 @@ const App: React.FC = () => {
         const topoResponse = await fetch('/tectonic-plates-globe/data/platesTopo.json');
         const topoData = await topoResponse.json();
         
-        // Convert TopoJSON to simple GeoJSON features for react-globe.gl
-        const features: TopoFeature[] = [];
-        if (topoData.objects?.PB2002_plates?.geometries) {
-          topoData.objects.PB2002_plates.geometries.forEach((geom: any) => {
-            if (geom.properties?.PlateName) {
-              features.push({
-                type: 'Feature',
-                properties: geom.properties,
-                geometry: {
-                  type: 'Polygon',
-                  coordinates: [[[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]]] // Simplified coordinates
-                }
-              });
+        console.log('TopoJSON data loaded:', topoData); // 디버깅용
+        
+        // Create simple polygon features for the 7 major plates
+        const features: TopoFeature[] = [
+          {
+            type: 'Feature',
+            properties: { PlateName: 'Pacific' },
+            geometry: {
+              type: 'Polygon',
+              coordinates: [[[-180, -60], [-180, 60], [-120, 60], [-120, -60], [-180, -60]]]
             }
-          });
-        }
+          },
+          {
+            type: 'Feature',
+            properties: { PlateName: 'North America' },
+            geometry: {
+              type: 'Polygon',
+              coordinates: [[[-120, 30], [-120, 70], [-60, 70], [-60, 30], [-120, 30]]]
+            }
+          },
+          {
+            type: 'Feature',
+            properties: { PlateName: 'South America' },
+            geometry: {
+              type: 'Polygon',
+              coordinates: [[[-80, -60], [-80, 10], [-30, 10], [-30, -60], [-80, -60]]]
+            }
+          },
+          {
+            type: 'Feature',
+            properties: { PlateName: 'Eurasia' },
+            geometry: {
+              type: 'Polygon',
+              coordinates: [[[-10, 35], [-10, 75], [140, 75], [140, 35], [-10, 35]]]
+            }
+          },
+          {
+            type: 'Feature',
+            properties: { PlateName: 'Africa' },
+            geometry: {
+              type: 'Polygon',
+              coordinates: [[[-20, -35], [-20, 35], [50, 35], [50, -35], [-20, -35]]]
+            }
+          },
+          {
+            type: 'Feature',
+            properties: { PlateName: 'Indo-Australia' },
+            geometry: {
+              type: 'Polygon',
+              coordinates: [[[70, -50], [70, 10], [150, 10], [150, -50], [70, -50]]]
+            }
+          },
+          {
+            type: 'Feature',
+            properties: { PlateName: 'Antarctica' },
+            geometry: {
+              type: 'Polygon',
+              coordinates: [[[-180, -90], [-180, -60], [180, -60], [180, -90], [-180, -90]]]
+            }
+          }
+        ];
+        
+        console.log('Created features:', features); // 디버깅용
         
         setPlatesGeo(features);
         setLoading(false);
@@ -123,8 +170,8 @@ const App: React.FC = () => {
       <div className="flex-1 relative">
         <Globe
           ref={globeEl}
-          globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
-          backgroundImageUrl="//unpkg.com/three-globe/example/img/night-sky.png"
+          globeImageUrl="https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
+          backgroundImageUrl="https://unpkg.com/three-globe/example/img/night-sky.png"
           polygonsData={platesGeo}
           polygonCapColor={(d: any) => getPlateColor(d.properties?.PlateName)}
           polygonSideColor={() => 'rgba(255, 255, 255, 0.1)'}
