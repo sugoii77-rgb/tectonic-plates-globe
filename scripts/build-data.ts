@@ -151,7 +151,7 @@ async function convertToTopoJSON(): Promise<void> {
     'npx --yes mapshaper',         
     `"${inputPath}"`, 
     `-filter '${plateFilter}'`,     
-    '-dissolve PlateName',  
+    '-dissolve2 PlateName inner=keep'  
     '-clean rewind',
     '-simplify 5% keep-shapes',     
     "-each 'id=PlateName'",         
