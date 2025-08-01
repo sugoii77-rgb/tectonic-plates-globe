@@ -49,14 +49,14 @@ const App: React.FC = () => {
         
         console.log('TopoJSON data loaded:', topoData); // 디버깅용
         
-        // Create simple polygon features for the 7 major plates
+        // Create more realistic plate boundaries (simplified but curved)
         const features: TopoFeature[] = [
           {
             type: 'Feature',
             properties: { PlateName: 'Pacific' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[[-180, -60], [-180, 60], [-120, 60], [-120, -60], [-180, -60]]]
+              coordinates: [[[-180, -70], [-170, 65], [-140, 70], [-120, 60], [-110, 20], [-80, -10], [-70, -40], [-90, -60], [140, -60], [160, -45], [180, -30], [180, 65], [-180, 65], [-180, -70]]]
             }
           },
           {
@@ -64,7 +64,7 @@ const App: React.FC = () => {
             properties: { PlateName: 'North America' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[[-120, 30], [-120, 70], [-60, 70], [-60, 30], [-120, 30]]]
+              coordinates: [[[-170, 65], [-140, 70], [-120, 60], [-110, 20], [-80, 35], [-60, 45], [-40, 60], [-20, 70], [0, 75], [-170, 75], [-170, 65]]]
             }
           },
           {
@@ -72,7 +72,7 @@ const App: React.FC = () => {
             properties: { PlateName: 'South America' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[[-80, -60], [-80, 10], [-30, 10], [-30, -60], [-80, -60]]]
+              coordinates: [[[-110, 20], [-80, -10], [-70, -40], [-90, -60], [-40, -60], [-30, -20], [-40, 10], [-60, 20], [-80, 35], [-110, 20]]]
             }
           },
           {
@@ -80,7 +80,7 @@ const App: React.FC = () => {
             properties: { PlateName: 'Eurasia' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[[-10, 35], [-10, 75], [140, 75], [140, 35], [-10, 35]]]
+              coordinates: [[[-20, 70], [0, 75], [40, 78], [80, 75], [120, 70], [140, 65], [160, 45], [140, 35], [120, 40], [60, 45], [20, 50], [-10, 60], [-20, 70]]]
             }
           },
           {
@@ -88,7 +88,7 @@ const App: React.FC = () => {
             properties: { PlateName: 'Africa' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[[-20, -35], [-20, 35], [50, 35], [50, -35], [-20, -35]]]
+              coordinates: [[[-20, 35], [20, 50], [40, 30], [50, 10], [45, -10], [35, -35], [20, -40], [-10, -35], [-20, -20], [-25, 10], [-20, 35]]]
             }
           },
           {
@@ -96,7 +96,7 @@ const App: React.FC = () => {
             properties: { PlateName: 'Indo-Australia' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[[70, -50], [70, 10], [150, 10], [150, -50], [70, -50]]]
+              coordinates: [[[50, 10], [140, 35], [160, 45], [160, -10], [150, -40], [130, -50], [90, -45], [70, -30], [60, -10], [65, 5], [50, 10]]]
             }
           },
           {
@@ -104,7 +104,7 @@ const App: React.FC = () => {
             properties: { PlateName: 'Antarctica' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[[-180, -90], [-180, -60], [180, -60], [180, -90], [-180, -90]]]
+              coordinates: [[[-180, -90], [-180, -60], [-90, -60], [-70, -40], [35, -35], [90, -45], [130, -50], [140, -60], [180, -60], [180, -90], [-180, -90]]]
             }
           }
         ];
@@ -128,7 +128,27 @@ const App: React.FC = () => {
       'Eurasia', 'Africa', 'Indo-Australia', 'Antarctica'
     ];
     const index = plateNames.indexOf(plateName);
-    return index >= 0 ? schemeCategory10[index] : '#cccccc';
+    const baseColor = index >= 0 ? schemeCategory10[index] : '#cccccc';
+    
+    // 선택된 판은 더 밝게, 나머지는 투명하게
+    if (selectedPlate && getPlateId(plateName) === selectedPlate.id) {
+      return baseColor; // 선택된 판은 완전 불투명
+    }
+    return baseColor + '80'; // 나머지는 50% 투명도
+  };
+
+  const getPlateStrokeColor = (plateName: string): string => {
+    if (selectedPlate && getPlateId(plateName) === selectedPlate.id) {
+      return '#ffff00'; // 선택된 판은 노란색 테두리
+    }
+    return '#ffffff'; // 기본 흰색 테두리
+  };
+
+  const getPlateStrokeWidth = (plateName: string): number => {
+    if (selectedPlate && getPlateId(plateName) === selectedPlate.id) {
+      return 3; // 선택된 판은 두꺼운 테두리
+    }
+    return 1; // 기본 테두리
   };
 
   const getPlateId = (plateName: string): string => {
@@ -174,11 +194,22 @@ const App: React.FC = () => {
           backgroundImageUrl="https://unpkg.com/three-globe/example/img/night-sky.png"
           polygonsData={platesGeo}
           polygonCapColor={(d: any) => getPlateColor(d.properties?.PlateName)}
-          polygonSideColor={() => 'rgba(255, 255, 255, 0.1)'}
-          polygonStrokeColor={() => '#ffffff'}
+          polygonSideColor={() => 'rgba(255, 255, 255, 0.05)'}
+          polygonStrokeColor={(d: any) => getPlateStrokeColor(d.properties?.PlateName)}
+          polygonStrokeWidth={(d: any) => getPlateStrokeWidth(d.properties?.PlateName)}
           polygonsTransitionDuration={300}
           onPolygonClick={handlePolygonClick}
-          polygonAltitude={0.01}
+          onPolygonHover={(polygon) => {
+            // 호버 효과를 위한 커서 변경
+            document.body.style.cursor = polygon ? 'pointer' : 'default';
+          }}
+          polygonAltitude={(d: any) => {
+            // 선택된 판은 약간 높이 띄우기
+            if (selectedPlate && getPlateId(d.properties?.PlateName) === selectedPlate.id) {
+              return 0.02;
+            }
+            return 0.005;
+          }}
           width={window.innerWidth * 0.7}
           height={window.innerHeight}
         />
