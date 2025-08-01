@@ -7,7 +7,7 @@ An educational web application that visualizes the seven major tectonic plates o
 This free educational tool helps middle and high school students understand:
 - The seven largest tectonic plates and their boundaries
 - Plate motion vectors and rates
-- Major historical earthquakes at plate collision zones
+- Major historical earthquakes at plate collision zones 
 - The dynamic nature of Earth's surface
 
 ## 🏗️ Architecture
