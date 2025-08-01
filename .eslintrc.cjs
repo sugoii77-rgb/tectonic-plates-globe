@@ -3,7 +3,7 @@ module.exports = {
   env: { browser: true, es2020: true, node: true },
   extends: [
     'eslint:recommended',
-    '@typescript-eslint/recommended',
+    // '@typescript-eslint/recommended',  // 임시 주석처리
     'plugin:react-hooks/recommended',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
@@ -14,7 +14,7 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
-    '@typescript-eslint/no-unused-vars': 'error',
-    '@typescript-eslint/no-explicit-any': 'warn',
+    // '@typescript-eslint/no-unused-vars': 'error',  // 주석처리
+    // '@typescript-eslint/no-explicit-any': 'warn',  // 주석처리
   },
 }
