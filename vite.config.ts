@@ -7,6 +7,25 @@ export default defineConfig({
   publicDir: 'public',
   build: {
     outDir: 'dist',
-    emptyOutDir: true
+    emptyOutDir: true,
+    commonjsOptions: {
+      include: [/node_modules/],
+      transformMixedEsModules: true
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          three: ['three', 'react-globe.gl']
+        }
+      }
+    }
+  },
+  optimizeDeps: {
+    include: ['three', 'react-globe.gl', 'd3-scale-chromatic'],
+    exclude: []
+  },
+  define: {
+    global: 'globalThis',
   }
 })
