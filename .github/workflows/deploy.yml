@@ -38,7 +38,7 @@ jobs:
       run: echo "Tests temporarily skipped"
       
     - name: Build data
-      run: npm run build:data
+      run: echo "Using pre-generated data files"
       
     - name: Build application
       run: npm run build
