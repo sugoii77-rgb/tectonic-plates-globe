@@ -26,7 +26,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const loadPlates = async () => {
       try {
-        const response = await fetch('/data/plates.json');
+        const response = await fetch('/tectonic-plates-globe/data/plates.json');
         const data = await response.json();
         setPlates(data);
         setLoading(false);
