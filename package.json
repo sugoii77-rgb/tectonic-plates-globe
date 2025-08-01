@@ -4,7 +4,7 @@
   "description": "Interactive 3D globe for learning about the seven major tectonic plates",
   "type": "module",
   "scripts": {
-    "build:data": "ts-node scripts/build-data.ts",
+    "build:data": "tsx scripts/build-data.ts",
     "build": "npm run build:data && vite build",
     "dev": "vite",
     "test": "jest --runInBand",
@@ -40,6 +40,7 @@
     "topojson-server": "^3.0.1",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
+    "tsx": "^4.7.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
   },
@@ -55,6 +56,6 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sugoii77-rgb/tectonic-plates-globe.git"
+    "url": "https://github.com/username/tectonic-plates-globe.git"
   }
 }
