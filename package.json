@@ -3,20 +3,17 @@
   "version": "1.0.0",
   "description": "Interactive 3D globe for learning about the seven major tectonic plates",
   "type": "module",
-"scripts": {
-  "build:data": "tsx scripts/build-data.ts",
-  "build": "vite build",
-  "dev": "vite",
-  "test": "jest --runInBand",
-  "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-  "preview": "vite preview"
-},
+  "scripts": {
+    "build:data": "tsx scripts/build-data.ts",
+    "build": "vite build",
+    "dev": "vite",
+    "test": "jest --runInBand",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-globe.gl": "^2.26.0",
-    "three": "^0.158.0",
-    "d3-scale-chromatic": "^3.0.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
@@ -50,8 +47,7 @@
     "tectonic-plates",
     "interactive",
     "globe",
-    "react",
-    "three.js"
+    "react"
   ],
   "license": "MIT",
   "repository": {
