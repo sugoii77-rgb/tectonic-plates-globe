@@ -9,7 +9,7 @@ export default defineConfig({
     outDir: '../dist',
     emptyOutDir: true,
     rollupOptions: {
-      input: './app/index.html',  // 명시적 entry point 추가
+      input: '../public/index.html',  // public/index.html을 entry point로 사용
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
