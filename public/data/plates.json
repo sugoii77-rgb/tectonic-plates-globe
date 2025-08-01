@@ -1,0 +1,147 @@
+[
+  {
+    "id": "PA",
+    "name": "Pacific",
+    "motion": {
+      "vector": [-3.2, 1.1],
+      "rate": 7.8
+    },
+    "collisions": [
+      {
+        "with": "North America",
+        "eqs": [
+          {
+            "year": 1964,
+            "place": "Prince William Sound, Alaska",
+            "Mw": 9.2
+          },
+          {
+            "year": 2011,
+            "place": "Tohoku, Japan",
+            "Mw": 9.1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "NA",
+    "name": "North America",
+    "motion": {
+      "vector": [-1.0, 0.2],
+      "rate": 2.1
+    },
+    "collisions": [
+      {
+        "with": "Pacific",
+        "eqs": [
+          {
+            "year": 1906,
+            "place": "San Francisco",
+            "Mw": 7.9
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "SA",
+    "name": "South America",
+    "motion": {
+      "vector": [-1.1, 0.4],
+      "rate": 1.8
+    },
+    "collisions": [
+      {
+        "with": "Nazca",
+        "eqs": [
+          {
+            "year": 1960,
+            "place": "Valdivia, Chile",
+            "Mw": 9.5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "EU",
+    "name": "Eurasia",
+    "motion": {
+      "vector": [0.8, 0.1],
+      "rate": 2.2
+    },
+    "collisions": [
+      {
+        "with": "Africa",
+        "eqs": [
+          {
+            "year": 1755,
+            "place": "Lisbon, Portugal",
+            "Mw": 8.5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "AF",
+    "name": "Africa",
+    "motion": {
+      "vector": [0.9, 0.5],
+      "rate": 2.5
+    },
+    "collisions": [
+      {
+        "with": "Eurasia",
+        "eqs": [
+          {
+            "year": 2023,
+            "place": "Morocco",
+            "Mw": 6.8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "IA",
+    "name": "Indo-Australia",
+    "motion": {
+      "vector": [2.8, 1.2],
+      "rate": 6.2
+    },
+    "collisions": [
+      {
+        "with": "Pacific",
+        "eqs": [
+          {
+            "year": 2004,
+            "place": "Sumatra-Andaman",
+            "Mw": 9.1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "AN",
+    "name": "Antarctica",
+    "motion": {
+      "vector": [0.1, -0.2],
+      "rate": 1.1
+    },
+    "collisions": [
+      {
+        "with": "Scotia",
+        "eqs": [
+          {
+            "year": 1929,
+            "place": "South Sandwich Islands",
+            "Mw": 8.1
+          }
+        ]
+      }
+    ]
+  }
+]
