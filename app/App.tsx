@@ -122,6 +122,8 @@ const App: React.FC = () => {
     loadData();
   }, []);
 
+  const [hoveredPlate, setHoveredPlate] = useState<string | null>(null);
+
   const getPlateColor = (plateName: string): string => {
     const plateNames = [
       'Pacific', 'North America', 'South America', 
@@ -130,25 +132,36 @@ const App: React.FC = () => {
     const index = plateNames.indexOf(plateName);
     const baseColor = index >= 0 ? schemeCategory10[index] : '#cccccc';
     
-    // 선택된 판은 더 밝게, 나머지는 많이 투명하게
-    if (selectedPlate && getPlateId(plateName) === selectedPlate.id) {
-      return baseColor + 'CC'; // 선택된 판은 80% 불투명
+    // 선택된 판인지 확인
+    const isSelected = selectedPlate && selectedPlate.name === plateName;
+    // 호버된 판인지 확인
+    const isHovered = hoveredPlate === plateName;
+    
+    if (isSelected) {
+      return baseColor + 'DD'; // 선택된 판: 87% 불투명
+    } else if (isHovered) {
+      return baseColor + '99'; // 호버된 판: 60% 불투명
+    } else {
+      return baseColor + '33'; // 나머지: 20% 불투명 (더 투명하게)
     }
-    return baseColor + '40'; // 나머지는 25% 불투명 (더 투명하게)
   };
 
   const getPlateStrokeColor = (plateName: string): string => {
-    if (selectedPlate && getPlateId(plateName) === selectedPlate.id) {
-      return '#ffff00'; // 선택된 판은 노란색 테두리
+    const isSelected = selectedPlate && selectedPlate.name === plateName;
+    
+    if (isSelected) {
+      return '#ffff00'; // 선택된 판: 노란색 테두리
     }
-    return '#ffffff80'; // 기본 반투명 흰색 테두리
+    return '#ffffff66'; // 기본: 반투명 흰색 테두리
   };
 
   const getPlateStrokeWidth = (plateName: string): number => {
-    if (selectedPlate && getPlateId(plateName) === selectedPlate.id) {
-      return 4; // 선택된 판은 더 두꺼운 테두리
+    const isSelected = selectedPlate && selectedPlate.name === plateName;
+    
+    if (isSelected) {
+      return 3; // 선택된 판: 두꺼운 테두리
     }
-    return 0.5; // 기본 얇은 테두리
+    return 0.3; // 기본: 매우 얇은 테두리
   };
 
   const getPlateId = (plateName: string): string => {
@@ -165,31 +178,34 @@ const App: React.FC = () => {
   };
 
   const handlePolygonClick = (polygon: any, event?: any) => {
-    console.log('Polygon clicked:', polygon); // 디버깅용
+    console.log('=== CLICK DEBUG ===');
+    console.log('Clicked polygon:', polygon);
+    console.log('Polygon properties:', polygon?.properties);
+    console.log('Plate name from polygon:', polygon?.properties?.PlateName);
     
     if (polygon?.properties?.PlateName) {
-      const plateId = getPlateId(polygon.properties.PlateName);
-      const plate = plates.find(p => p.id === plateId);
+      const plateName = polygon.properties.PlateName;
+      const plate = plates.find(p => p.name === plateName); // ID 대신 name으로 직접 비교
       
-      console.log('Selected plate:', plate); // 디버깅용
+      console.log('Found plate by name:', plate);
+      console.log('Current selected plate:', selectedPlate);
       
       if (plate) {
         // 같은 판을 다시 클릭하면 선택 해제
-        if (selectedPlate?.id === plate.id) {
+        if (selectedPlate?.name === plate.name) {
+          console.log('Deselecting plate');
           setSelectedPlate(null);
         } else {
+          console.log('Selecting new plate:', plate);
           setSelectedPlate(plate);
-        }
-        
-        // 이벤트 전파 중단
-        if (event) {
-          event.stopPropagation?.();
         }
       }
     } else {
       // 빈 공간 클릭 시 선택 해제
+      console.log('Clicked empty space, deselecting');
       setSelectedPlate(null);
     }
+    console.log('=== END DEBUG ===');
   };
 
   if (loading) {
@@ -214,21 +230,29 @@ const App: React.FC = () => {
           backgroundImageUrl="https://unpkg.com/three-globe/example/img/night-sky.png"
           polygonsData={platesGeo}
           polygonCapColor={(d: any) => getPlateColor(d.properties?.PlateName)}
-          polygonSideColor={() => 'rgba(255, 255, 255, 0.02)'}
+          polygonSideColor={() => 'rgba(255, 255, 255, 0.01)'}
           polygonStrokeColor={(d: any) => getPlateStrokeColor(d.properties?.PlateName)}
           polygonStrokeWidth={(d: any) => getPlateStrokeWidth(d.properties?.PlateName)}
-          polygonsTransitionDuration={500}
+          polygonsTransitionDuration={200}
           onPolygonClick={handlePolygonClick}
           onPolygonHover={(polygon, prevPolygon) => {
-            // 호버 효과
-            document.body.style.cursor = polygon ? 'pointer' : 'default';
+            // 호버 상태 업데이트
+            if (polygon?.properties?.PlateName) {
+              setHoveredPlate(polygon.properties.PlateName);
+              document.body.style.cursor = 'pointer';
+            } else {
+              setHoveredPlate(null);
+              document.body.style.cursor = 'default';
+            }
           }}
           polygonAltitude={(d: any) => {
-            // 선택된 판은 약간 높이 띄우기
-            if (selectedPlate && getPlateId(d.properties?.PlateName) === selectedPlate.id) {
-              return 0.015;
+            const plateName = d.properties?.PlateName;
+            const isSelected = selectedPlate && selectedPlate.name === plateName;
+            
+            if (isSelected) {
+              return 0.012; // 선택된 판: 높이 상승
             }
-            return 0.002; // 기본 높이를 더 낮게
+            return 0.001; // 기본: 매우 낮은 높이
           }}
           enablePointerInteraction={true}
           width={window.innerWidth * 0.7}
