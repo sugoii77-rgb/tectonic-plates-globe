@@ -10,6 +10,12 @@ export default {
       useESM: true
     }]
   },
+  globals: {
+    'ts-jest': {
+      useESM: true
+    }
+  },
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   collectCoverageFrom: [
     'scripts/**/*.ts',
     'app/**/*.{ts,tsx}',
