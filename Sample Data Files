@@ -1,0 +1,53 @@
+// public/data/plates.json (sample structure)
+[
+  {
+    "id": "PA",
+    "name": "Pacific",
+    "motion": {
+      "vector": [-3.2, 1.1],
+      "rate": 7.8
+    },
+    "collisions": [
+      {
+        "with": "North America",
+        "eqs": [
+          {
+            "year": 1964,
+            "place": "Prince William Sound, Alaska",
+            "Mw": 9.2
+          },
+          {
+            "year": 2011,
+            "place": "Tohoku, Japan",
+            "Mw": 9.1
+          },
+          {
+            "year": 1952,
+            "place": "Kamchatka Peninsula",
+            "Mw": 9.0
+          }
+        ]
+      }
+    ]
+  }
+]
+
+// public/data/platesTopo.json (sample structure - will be generated)
+{
+  "type": "Topology",
+  "arcs": [...],
+  "objects": {
+    "PB2002_plates": {
+      "type": "GeometryCollection",
+      "geometries": [
+        {
+          "type": "Polygon",
+          "properties": {
+            "PlateName": "Pacific"
+          },
+          "arcs": [[0]]
+        }
+      ]
+    }
+  }
+}
