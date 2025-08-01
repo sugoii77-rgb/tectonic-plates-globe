@@ -1,0 +1,49 @@
+{
+  "type": "Topology",
+  "arcs": [
+    [[100, 0], [101, 0], [101, 1], [100, 1], [100, 0]],
+    [[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]
+  ],
+  "objects": {
+    "PB2002_plates": {
+      "type": "GeometryCollection",
+      "geometries": [
+        {
+          "type": "Polygon",
+          "properties": { "PlateName": "Pacific" },
+          "arcs": [[0]]
+        },
+        {
+          "type": "Polygon", 
+          "properties": { "PlateName": "North America" },
+          "arcs": [[1]]
+        },
+        {
+          "type": "Polygon",
+          "properties": { "PlateName": "South America" },
+          "arcs": [[0]]
+        },
+        {
+          "type": "Polygon",
+          "properties": { "PlateName": "Eurasia" },
+          "arcs": [[1]]
+        },
+        {
+          "type": "Polygon",
+          "properties": { "PlateName": "Africa" },
+          "arcs": [[0]]
+        },
+        {
+          "type": "Polygon",
+          "properties": { "PlateName": "Indo-Australia" },
+          "arcs": [[1]]
+        },
+        {
+          "type": "Polygon",
+          "properties": { "PlateName": "Antarctica" },
+          "arcs": [[0]]
+        }
+      ]
+    }
+  }
+}
