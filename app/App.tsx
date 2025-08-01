@@ -49,19 +49,14 @@ const App: React.FC = () => {
         
         console.log('TopoJSON data loaded:', topoData); // 디버깅용
         
-        // Create simplified but geographically accurate plate boundaries
-        // Based on real tectonic plate maps
+        // Ultra-simple rectangular boundaries for testing
         const features: TopoFeature[] = [
           {
             type: 'Feature',
             properties: { PlateName: 'Pacific' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[
-                [-180, -90], [-180, 70], [-130, 60], [-110, 25], [-80, -10], 
-                [-70, -55], [140, -60], [150, -45], [160, -30], [170, 10], 
-                [180, 65], [180, -90], [-180, -90]
-              ]]
+              coordinates: [[[-180, -80], [-180, 80], [-100, 80], [-100, -80], [-180, -80]]]
             }
           },
           {
@@ -69,10 +64,7 @@ const App: React.FC = () => {
             properties: { PlateName: 'North America' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[
-                [-130, 60], [-110, 25], [-80, 30], [-75, 45], [-60, 50], 
-                [-45, 60], [-10, 70], [-130, 70], [-130, 60]
-              ]]
+              coordinates: [[[-100, 20], [-100, 80], [-60, 80], [-60, 20], [-100, 20]]]
             }
           },
           {
@@ -80,21 +72,7 @@ const App: React.FC = () => {
             properties: { PlateName: 'South America' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[
-                [-110, 25], [-80, -10], [-70, -55], [-30, -60], [-25, -30], 
-                [-30, 0], [-45, 15], [-80, 30], [-110, 25]
-              ]]
-            }
-          },
-          {
-            type: 'Feature',
-            properties: { PlateName: 'Eurasia' },
-            geometry: {
-              type: 'Polygon',
-              coordinates: [[
-                [-10, 70], [30, 85], [180, 85], [180, 30], [140, 35], 
-                [90, 5], [60, 25], [40, 35], [0, 40], [-10, 70]
-              ]]
+              coordinates: [[[-100, -60], [-100, 20], [-30, 20], [-30, -60], [-100, -60]]]
             }
           },
           {
@@ -102,10 +80,15 @@ const App: React.FC = () => {
             properties: { PlateName: 'Africa' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[
-                [0, 40], [40, 35], [60, 25], [50, -5], [40, -35], 
-                [20, -45], [10, -35], [-10, -20], [-20, 0], [0, 40]
-              ]]
+              coordinates: [[[-30, -40], [-30, 40], [60, 40], [60, -40], [-30, -40]]]
+            }
+          },
+          {
+            type: 'Feature',
+            properties: { PlateName: 'Eurasia' },
+            geometry: {
+              type: 'Polygon',
+              coordinates: [[[-30, 40], [-30, 80], [180, 80], [180, 40], [-30, 40]]]
             }
           },
           {
@@ -113,10 +96,7 @@ const App: React.FC = () => {
             properties: { PlateName: 'Indo-Australia' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[
-                [60, 25], [90, 5], [140, 35], [180, 30], [180, -45], 
-                [150, -45], [130, -50], [90, -40], [70, -10], [60, 25]
-              ]]
+              coordinates: [[[60, -50], [60, 40], [180, 40], [180, -50], [60, -50]]]
             }
           },
           {
@@ -124,11 +104,7 @@ const App: React.FC = () => {
             properties: { PlateName: 'Antarctica' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[
-                [-180, -90], [180, -90], [180, -45], [150, -45], [130, -50], 
-                [90, -40], [40, -35], [20, -45], [-25, -30], [-30, -60], 
-                [-70, -55], [-180, -90]
-              ]]
+              coordinates: [[[-180, -80], [180, -80], [180, -50], [-180, -50], [-180, -80]]]
             }
           }
         ];
@@ -202,33 +178,53 @@ const App: React.FC = () => {
   };
 
   const handlePolygonClick = (polygon: any, event?: any) => {
-    console.log('=== CLICK DEBUG ===');
-    console.log('Clicked polygon:', polygon);
-    console.log('Polygon properties:', polygon?.properties);
-    console.log('Plate name from polygon:', polygon?.properties?.PlateName);
+    console.log('=== CLICK DEBUG v2 ===');
+    console.log('Raw clicked object:', polygon);
+    console.log('Event object:', event);
     
-    if (polygon?.properties?.PlateName) {
-      const plateName = polygon.properties.PlateName;
-      const plate = plates.find(p => p.name === plateName); // ID 대신 name으로 직접 비교
+    // 배열인 경우 처리
+    const polygons = Array.isArray(polygon) ? polygon : [polygon];
+    console.log('Polygons array:', polygons);
+    
+    // 유효한 판 찾기
+    for (const poly of polygons) {
+      console.log('Checking polygon:', poly);
+      console.log('Properties:', poly?.properties);
+      console.log('ID:', poly?.id);
       
-      console.log('Found plate by name:', plate);
-      console.log('Current selected plate:', selectedPlate);
+      const plateKey = poly?.id || poly?.properties?.PlateName || poly?.properties?.id;
+      console.log('Extracted plate key:', plateKey);
       
-      if (plate) {
-        // 같은 판을 다시 클릭하면 선택 해제
-        if (selectedPlate?.name === plate.name) {
-          console.log('Deselecting plate');
-          setSelectedPlate(null);
-        } else {
-          console.log('Selecting new plate:', plate);
-          setSelectedPlate(plate);
+      if (plateKey) {
+        // name으로 직접 매칭 시도
+        let plate = plates.find(p => p.name === plateKey);
+        
+        // 만약 없으면 ID로도 시도
+        if (!plate) {
+          const plateId = getPlateId(plateKey);
+          plate = plates.find(p => p.id === plateId);
+        }
+        
+        console.log('Found plate:', plate);
+        
+        if (plate) {
+          // 같은 판을 다시 클릭하면 선택 해제
+          if (selectedPlate?.name === plate.name) {
+            console.log('Deselecting same plate');
+            setSelectedPlate(null);
+          } else {
+            console.log('Selecting new plate:', plate.name);
+            setSelectedPlate(plate);
+          }
+          console.log('=== END DEBUG ===');
+          return; // 첫 번째 유효한 판에서 중단
         }
       }
-    } else {
-      // 빈 공간 클릭 시 선택 해제
-      console.log('Clicked empty space, deselecting');
-      setSelectedPlate(null);
     }
+    
+    // 유효한 판을 찾지 못한 경우
+    console.log('No valid plate found, deselecting');
+    setSelectedPlate(null);
     console.log('=== END DEBUG ===');
   };
 
