@@ -49,7 +49,7 @@ const App: React.FC = () => {
         
         console.log('TopoJSON data loaded:', topoData); // 디버깅용
         
-        // Realistic continental boundaries (actual continent sizes)
+        // Mixed version - keeping working Eurasia, rolling back NA & SA to v17
         const features: TopoFeature[] = [
           {
             type: 'Feature',
@@ -70,7 +70,7 @@ const App: React.FC = () => {
               type: 'Polygon',
               coordinates: [[
                 [-130, 60], [-110, 25], [-80, 30], [-75, 45], [-60, 50], 
-                [-50, 65], [-130, 65], [-130, 60]
+                [-45, 60], [-10, 70], [-130, 70], [-130, 60]
               ]]
             }
           },
@@ -80,8 +80,8 @@ const App: React.FC = () => {
             geometry: {
               type: 'Polygon',
               coordinates: [[
-                [-110, 25], [-80, -10], [-70, -55], [-35, -55], [-30, -30], 
-                [-35, -5], [-50, 15], [-80, 30], [-110, 25]
+                [-110, 25], [-80, -10], [-70, -55], [-30, -60], [-25, -30], 
+                [-30, 0], [-45, 15], [-80, 30], [-110, 25]
               ]]
             }
           },
