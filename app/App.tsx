@@ -49,14 +49,18 @@ const App: React.FC = () => {
         
         console.log('TopoJSON data loaded:', topoData); // 디버깅용
         
-        // Fixed boundaries - no overlapping areas
+        // Geographically accurate boundaries (no overlap)
         const features: TopoFeature[] = [
           {
             type: 'Feature',
             properties: { PlateName: 'Pacific' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[[-180, -80], [-180, 80], [-100, 80], [-100, -80], [-180, -80]]]
+              coordinates: [[
+                [-180, -90], [-180, 70], [-130, 65], [-110, 30], [-80, -15], 
+                [-70, -60], [140, -65], [150, -50], [165, -20], [175, 20], 
+                [180, 65], [180, -90], [-180, -90]
+              ]]
             }
           },
           {
@@ -64,7 +68,10 @@ const App: React.FC = () => {
             properties: { PlateName: 'North America' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[[-100, 20], [-100, 70], [-30, 70], [-30, 20], [-100, 20]]]
+              coordinates: [[
+                [-130, 65], [-110, 30], [-75, 35], [-65, 50], [-50, 65], 
+                [-20, 75], [-130, 75], [-130, 65]
+              ]]
             }
           },
           {
@@ -72,15 +79,10 @@ const App: React.FC = () => {
             properties: { PlateName: 'South America' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[[-100, -60], [-100, 20], [-30, 20], [-30, -60], [-100, -60]]]
-            }
-          },
-          {
-            type: 'Feature',
-            properties: { PlateName: 'Africa' },
-            geometry: {
-              type: 'Polygon',
-              coordinates: [[[-30, -40], [-30, 20], [60, 20], [60, -40], [-30, -40]]]
+              coordinates: [[
+                [-110, 30], [-80, -15], [-70, -60], [-35, -65], [-30, -35], 
+                [-35, -5], [-50, 20], [-75, 35], [-110, 30]
+              ]]
             }
           },
           {
@@ -88,7 +90,21 @@ const App: React.FC = () => {
             properties: { PlateName: 'Eurasia' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[[-30, 20], [-30, 70], [180, 70], [180, 20], [-30, 20]]]
+              coordinates: [[
+                [-20, 75], [25, 80], [140, 80], [175, 20], [140, 30], 
+                [90, 5], [65, 20], [40, 30], [10, 40], [-20, 75]
+              ]]
+            }
+          },
+          {
+            type: 'Feature',
+            properties: { PlateName: 'Africa' },
+            geometry: {
+              type: 'Polygon',
+              coordinates: [[
+                [10, 40], [40, 30], [65, 20], [55, -5], [45, -30], 
+                [25, -40], [5, -35], [-15, -20], [-20, 5], [10, 40]
+              ]]
             }
           },
           {
@@ -96,7 +112,10 @@ const App: React.FC = () => {
             properties: { PlateName: 'Indo-Australia' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[[60, -50], [60, 20], [180, 20], [180, -50], [60, -50]]]
+              coordinates: [[
+                [65, 20], [90, 5], [140, 30], [175, 20], [180, -20], 
+                [155, -45], [130, -55], [95, -45], [75, -15], [65, 20]
+              ]]
             }
           },
           {
@@ -104,7 +123,11 @@ const App: React.FC = () => {
             properties: { PlateName: 'Antarctica' },
             geometry: {
               type: 'Polygon',
-              coordinates: [[[-180, -80], [180, -80], [180, -50], [-180, -50], [-180, -80]]]
+              coordinates: [[
+                [-180, -90], [180, -90], [180, -45], [155, -45], [130, -55], 
+                [95, -45], [45, -30], [25, -40], [-35, -65], [-70, -60], 
+                [-180, -90]
+              ]]
             }
           }
         ];
